@@ -130,12 +130,12 @@ class EMA3SRSI(IStrategy):
         position_adjustment_enable = False
 
     # max_dca_multiplier calculation
-    max_dca_multiplier = (1.0 + max_safety_orders.value)
-    if (max_safety_orders.value > 0.0):
-        if (safety_order_volume_scale.value > 1):
-            max_dca_multiplier = (2.0 + (safety_order_volume_scale.value * (math.pow(safety_order_volume_scale.value, (max_safety_orders.value - 1)) - 1) / (safety_order_volume_scale.value - 1)))
-        elif (safety_order_volume_scale.value < 1):
-            max_dca_multiplier = (2.0 + (safety_order_volume_scale.value * (1 - math.pow(safety_order_volume_scale.value, (max_safety_orders.value - 1))) / (1 - safety_order_volume_scale.value)))
+    max_dca_multiplier = (1.0 + float(max_safety_orders.value))
+    if (max_safety_orders.value > 0):
+        if (safety_order_volume_scale.value > 1.0):
+            max_dca_multiplier = (2.0 + (safety_order_volume_scale.value * (math.pow(safety_order_volume_scale.value, (float(max_safety_orders.value) - 1.0)) - 1.0) / (safety_order_volume_scale.value - 1.0)))
+        elif (safety_order_volume_scale.value < 1.0):
+            max_dca_multiplier = (2.0 + (safety_order_volume_scale.value * (1.0 - math.pow(safety_order_volume_scale.value, (float(max_safety_orders.value) - 1.0))) / (1.0 - safety_order_volume_scale.value)))
 
     def informative_pairs(self):
         """
