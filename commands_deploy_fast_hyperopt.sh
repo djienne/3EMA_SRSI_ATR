@@ -4,6 +4,7 @@ git clone https://github.com/freqtrade/freqtrade.git
 cd freqtrade
 git checkout stable
 ./setup.sh -i
+
 source ./.env/bin/activate
 cd ..
 git clone https://github.com/djienne/3EMA_SRSI_ATR.git
