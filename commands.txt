@@ -1,0 +1,40 @@
+sudo docker-compose up
+
+sudo docker exec -it freqtrade bash
+
+pip install ta
+pip3 install ta
+
+freqtrade download-data --timeframe 5m --timerange 20170901- --config ./user_data/config_backtest.json
+
+freqtrade backtesting --strategy EMA3SRSI  --config ./user_data/config_backtest.json --timeframe 5m  --timerange 20170901-
+
+sudo docker exec -it freqtrade3EMA freqtrade hyperopt --strategy EMA3SRSI --timeframe 5m --config ./user_data/config_backtest.json --hyperopt-loss CalmarHyperOptLoss --timerange 20170901- --spaces buy -j 2 -e 3000
+
+sudo docker exec -it freqtrade3EMA freqtrade backtesting --strategy EMA3SRSI --config ./user_data/config_backtest.json --timeframe 5m --timerange 20170901- --breakdown month
+
+sudo docker exec -it freqtrade3EMA freqtrade download-data --timeframe 5m --timerange 20170901- --config ./user_data/config_backtest.json
+
+sudo docker exec -it freqtrade3EMA freqtrade hyperopt-show --best -n -1
+
+
+freqtrade trade --logfile ./user_data/logs/freqtrade.log --db-url sqlite:////home/david/Desktop/CODES/Bot_crypto/freqtrade/3EMA_SRSI_ATR/user_data/tradesv3_live_dry.sqlite --config ./user_data/config.json --strategy EMA3SRSI
+
+freqtrade download-data --timeframe 5m --timerange 20170817- --config ./user_data/config_backtest.json
+
+freqtrade hyperopt --strategy EMA3SRSI --timeframe 5m --config ./user_data/config_backtest.json --hyperopt-loss SortinoHyperOptLossDaily --analyze-per-epoch --timerange 20170817- --min-trades 5000 --spaces buy -j 4 -e 3000
+
+freqtrade download-data --timeframe 5m --timerange 20170817- --config ./user_data/config_backtest.json
+
+freqtrade hyperopt --strategy EMA3SRSI --timeframe 5m --config ./user_data/config_backtest.json --hyperopt-loss SortinoHyperOptLossDaily --analyze-per-epoch --timerange 20170817- --spaces buy -j -1 -e 3000
+
+freqtrade hyperopt-show --best -n -1
+
+///////
+open browser http://127.0.0.1:8080/ to see UI
+
+python3 scripts/rest_client.py --config ./user_data/config.json forcebuy BNB/USD
+
+sudo systemctl disable apparmor.service --now
+sudo service apparmor teardown
+sudo docker-compose down
